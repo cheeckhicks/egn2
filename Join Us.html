@@ -1,0 +1,354 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Join Us — e-gnition</title>
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;600;700;800;900&family=Barlow:wght@300;400;500;600&display=swap" rel="stylesheet" />
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body { font-family: 'Barlow', sans-serif; background: #fff; color: #111; -webkit-font-smoothing: antialiased; }
+
+:root {
+  --cyan: #13cce4;
+  --green: #6bbc2f;
+  --navy: #02345f;
+  --lgray: #f4f4f4;
+}
+
+/* ── NAV ── */
+#nav {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+  height: 60px;
+  background: rgba(2,52,95,0.97);
+  backdrop-filter: blur(12px);
+  border-bottom: 1px solid rgba(19,204,228,0.2);
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 0 48px;
+  transition: box-shadow .3s;
+}
+#nav.scrolled { box-shadow: 0 4px 24px rgba(0,0,0,.25); }
+.nav-logo { display: flex; align-items: center; text-decoration: none; }
+.nav-logo img { height: 36px; width: auto; }
+.nav-links { display: flex; gap: 28px; align-items: center; }
+.nav-links a { font-size: 13px; font-weight: 500; color: rgba(255,255,255,0.75); text-decoration: none; transition: color .2s; }
+.nav-links a:hover { color: var(--cyan); }
+.nav-links a.active { color: #fff; font-weight: 600; }
+.nav-links a.nav-cta { background: var(--green); color: #fff; font-family: 'Barlow Condensed', sans-serif; font-weight: 700; font-size: 13px; letter-spacing: .08em; text-transform: uppercase; padding: 8px 20px; }
+.nav-links a.nav-cta:hover { background: #5aa025; color: #fff; }
+
+/* ── HERO SPLIT ── */
+#hero {
+  margin-top: 60px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  min-height: calc(100vh - 60px);
+}
+.hero-image {
+  background: var(--navy);
+  position: relative; overflow: hidden;
+}
+.hero-image img {
+  width: 100%; height: 100%;
+  object-fit: cover; object-position: center top;
+  display: block;
+}
+.hero-image-overlay {
+  position: absolute; inset: 0;
+  background: linear-gradient(to right, transparent 60%, rgba(255,255,255,0.06));
+}
+.hero-right {
+  background: var(--lgray);
+  padding: 72px 60px 72px 56px;
+  display: flex; flex-direction: column; justify-content: center;
+}
+.hero-eyebrow {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-weight: 700; font-size: 12px; letter-spacing: .18em;
+  text-transform: uppercase; color: var(--green); margin-bottom: 14px;
+}
+.hero-headline {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-weight: 900; font-size: 80px; line-height: .92;
+  text-transform: uppercase; color: var(--navy);
+}
+.hero-headline em { font-style: normal; color: var(--cyan); }
+.hero-body {
+  font-size: 15px; font-weight: 300; color: #555;
+  line-height: 1.75; margin-top: 22px; max-width: 400px;
+}
+.hero-perks {
+  display: flex; flex-direction: column; gap: 10px;
+  margin-top: 28px;
+}
+.perk {
+  display: flex; align-items: flex-start; gap: 12px;
+}
+.perk-dot {
+  width: 6px; height: 6px; border-radius: 50%;
+  background: var(--cyan); flex-shrink: 0; margin-top: 7px;
+}
+.perk-text { font-size: 14px; color: #444; line-height: 1.5; }
+.perk-text strong { color: var(--navy); font-weight: 600; }
+
+/* ── FORM SECTION ── */
+#form-section {
+  padding: 80px 60px;
+  max-width: 860px; margin: 0 auto;
+}
+.form-header { text-align: center; margin-bottom: 52px; }
+.section-eyebrow {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-weight: 700; font-size: 11px; letter-spacing: .18em;
+  text-transform: uppercase; color: var(--cyan); margin-bottom: 12px;
+}
+.section-title {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-weight: 800; font-size: 48px; line-height: .95;
+  text-transform: uppercase; color: var(--navy);
+}
+.form-sub {
+  font-size: 14px; color: #888; margin-top: 12px; line-height: 1.6;
+}
+
+.form-grid {
+  display: grid; grid-template-columns: 1fr 1fr; gap: 20px 28px;
+}
+.form-group { display: flex; flex-direction: column; gap: 7px; }
+.form-group.full { grid-column: 1 / -1; }
+.form-label {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-weight: 700; font-size: 12px; letter-spacing: .1em;
+  text-transform: uppercase; color: var(--navy);
+}
+.form-input,
+.form-select,
+.form-textarea {
+  width: 100%;
+  background: var(--lgray);
+  border: 1px solid #e0e0e0;
+  border-bottom: 2px solid #ddd;
+  padding: 12px 16px;
+  font-family: 'Barlow', sans-serif;
+  font-size: 14px; color: #111;
+  outline: none;
+  transition: border-color .2s, background .2s;
+  appearance: none;
+}
+.form-input:focus,
+.form-select:focus,
+.form-textarea:focus {
+  border-color: #ddd;
+  border-bottom-color: var(--cyan);
+  background: #fff;
+}
+.form-input::placeholder,
+.form-textarea::placeholder { color: #bbb; }
+.form-select { cursor: pointer; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%23999' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: right 14px center; padding-right: 36px; }
+.form-textarea { resize: vertical; min-height: 110px; }
+
+.dept-checks {
+  display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px;
+  margin-top: 4px;
+}
+.dept-check {
+  display: flex; align-items: center; gap: 8px;
+  background: var(--lgray); border: 1px solid #e0e0e0;
+  padding: 10px 12px; cursor: pointer;
+  transition: border-color .15s, background .15s;
+}
+.dept-check:hover { border-color: var(--cyan); }
+.dept-check input[type="checkbox"] { accent-color: var(--cyan); width: 14px; height: 14px; cursor: pointer; }
+.dept-check-label { font-size: 13px; color: #444; cursor: pointer; line-height: 1; }
+
+.form-submit-row { margin-top: 36px; display: flex; align-items: center; gap: 20px; }
+.btn-submit {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-weight: 700; font-size: 14px; letter-spacing: .1em;
+  text-transform: uppercase;
+  background: var(--navy); color: #fff;
+  padding: 14px 40px; border: none; cursor: pointer;
+  transition: background .2s;
+}
+.btn-submit:hover { background: var(--cyan); }
+.form-note { font-size: 12px; color: #aaa; line-height: 1.5; }
+
+/* ── FOOTER ── */
+#footer {
+  background: #0d0d0d;
+  padding: 28px 60px;
+  display: flex; justify-content: space-between; align-items: center;
+}
+.footer-links { display: flex; gap: 24px; }
+.footer-links a { font-size: 11px; color: #555; letter-spacing: .06em; text-transform: uppercase; text-decoration: none; }
+.footer-links a:hover { color: #888; }
+.footer-copy { font-size: 11px; color: #444; }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav id="nav">
+  <a href="Homepage.html" class="nav-logo">
+    <img src="uploads/logo.png" alt="e-gnition" />
+  </a>
+  <div class="nav-links">
+    <a href="Homepage.html#about">Team</a>
+    <a href="Homepage.html#car">The Car</a>
+    <a href="Homepage.html#achievements">Results</a>
+    <a href="Sponsors.html">Sponsors</a>
+    <a href="Driverless.html" style="color:var(--cyan);">Driverless</a>
+    <a href="Join Us.html" class="nav-cta">Join Us</a>
+  </div>
+</nav>
+
+<!-- HERO SPLIT -->
+<section id="hero">
+  <div class="hero-image">
+    <img src="uploads/pasted-1777229856086-0.png" alt="Join e-gnition" />
+    <div class="hero-image-overlay"></div>
+  </div>
+  <div class="hero-right">
+    <div class="hero-eyebrow">Applications Open · 2025/26</div>
+    <h1 class="hero-headline">
+      We Want<br /><em>You.</em>
+    </h1>
+    <p class="hero-body">
+      e-gnition is looking for driven students from all disciplines to join our Formula Student team at TU Hamburg. Whether you're an engineer, programmer, designer, or communicator — there's a place for you here.
+    </p>
+    <div class="hero-perks">
+      <div class="perk">
+        <div class="perk-dot"></div>
+        <div class="perk-text"><strong>No prior experience required</strong> — we train you from day one.</div>
+      </div>
+      <div class="perk">
+        <div class="perk-dot" style="background:var(--green)"></div>
+        <div class="perk-text"><strong>Real engineering work</strong> — design, build & race a formula car.</div>
+      </div>
+      <div class="perk">
+        <div class="perk-dot" style="background:var(--navy)"></div>
+        <div class="perk-text"><strong>International competitions</strong> — FSG, FS Netherlands & more.</div>
+      </div>
+      <div class="perk">
+        <div class="perk-dot"></div>
+        <div class="perk-text"><strong>Industry connections</strong> — sponsors, mentors, career opportunities.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FORM -->
+<section id="form-section">
+  <div class="form-header">
+    <div class="section-eyebrow">Apply Now</div>
+    <h2 class="section-title">Join the Team</h2>
+    <p class="form-sub">Fill out the form below and we'll be in touch. Applications are reviewed on a rolling basis.</p>
+  </div>
+
+  <form id="apply-form" onsubmit="handleSubmit(event)">
+    <div class="form-grid">
+      <div class="form-group">
+        <label class="form-label" for="fname">First Name</label>
+        <input class="form-input" type="text" id="fname" name="fname" placeholder="Max" required />
+      </div>
+      <div class="form-group">
+        <label class="form-label" for="lname">Last Name</label>
+        <input class="form-input" type="text" id="lname" name="lname" placeholder="Mustermann" required />
+      </div>
+      <div class="form-group">
+        <label class="form-label" for="email">Email</label>
+        <input class="form-input" type="email" id="email" name="email" placeholder="max@tuhh.de" required />
+      </div>
+      <div class="form-group">
+        <label class="form-label" for="semester">Current Semester</label>
+        <select class="form-select" id="semester" name="semester" required>
+          <option value="" disabled selected>Select semester</option>
+          <option>1st</option><option>2nd</option><option>3rd</option>
+          <option>4th</option><option>5th</option><option>6th</option>
+          <option>7th+</option><option>Master's</option><option>PhD</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label class="form-label" for="field">Field of Study</label>
+        <input class="form-input" type="text" id="field" name="field" placeholder="Mechanical Engineering" required />
+      </div>
+      <div class="form-group">
+        <label class="form-label" for="heard">How did you hear about us?</label>
+        <select class="form-select" id="heard" name="heard">
+          <option value="" disabled selected>Select one</option>
+          <option>Instagram</option><option>LinkedIn</option>
+          <option>Friend / teammate</option><option>Campus poster / event</option>
+          <option>University lecture</option><option>Other</option>
+        </select>
+      </div>
+
+      <div class="form-group full">
+        <label class="form-label">Which departments interest you? <span style="font-weight:400;text-transform:none;letter-spacing:0;color:#aaa;">(select all that apply)</span></label>
+        <div class="dept-checks">
+          <label class="dept-check"><input type="checkbox" name="dept" value="Aerodynamics" /><span class="dept-check-label">Aerodynamics</span></label>
+          <label class="dept-check"><input type="checkbox" name="dept" value="Chassis" /><span class="dept-check-label">Chassis</span></label>
+          <label class="dept-check"><input type="checkbox" name="dept" value="Powertrain" /><span class="dept-check-label">Powertrain</span></label>
+          <label class="dept-check"><input type="checkbox" name="dept" value="Electronics" /><span class="dept-check-label">Electronics</span></label>
+          <label class="dept-check"><input type="checkbox" name="dept" value="Suspension" /><span class="dept-check-label">Suspension</span></label>
+          <label class="dept-check"><input type="checkbox" name="dept" value="Software" /><span class="dept-check-label">Software</span></label>
+          <label class="dept-check"><input type="checkbox" name="dept" value="Driverless" /><span class="dept-check-label">Driverless</span></label>
+          <label class="dept-check"><input type="checkbox" name="dept" value="Operations" /><span class="dept-check-label">Operations</span></label>
+          <label class="dept-check"><input type="checkbox" name="dept" value="Management" /><span class="dept-check-label">Management</span></label>
+        </div>
+      </div>
+
+      <div class="form-group full">
+        <label class="form-label" for="motivation">Why do you want to join e-gnition?</label>
+        <textarea class="form-textarea" id="motivation" name="motivation" placeholder="Tell us a bit about yourself and what drives you..." required></textarea>
+      </div>
+    </div>
+
+    <div class="form-submit-row">
+      <button type="submit" class="btn-submit">Submit Application →</button>
+      <span class="form-note">We'll reply within 5–7 business days.<br />No CV required at this stage.</span>
+    </div>
+  </form>
+
+  <div id="form-success" style="display:none; text-align:center; padding:48px 0;">
+    <div style="font-family:'Barlow Condensed',sans-serif; font-weight:900; font-size:52px; color:var(--navy); text-transform:uppercase;">Application Sent!</div>
+    <div style="font-size:15px; color:#666; margin-top:12px;">We'll be in touch soon. Welcome to the team (almost).</div>
+    <div style="width:40px; height:3px; background:var(--cyan); margin:20px auto 0;"></div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer id="footer">
+  <img src="uploads/logo.png" alt="e-gnition" style="height:26px; width:auto; filter:brightness(0) invert(1); opacity:.5;" />
+  <nav class="footer-links">
+    <a href="Homepage.html">Home</a>
+    <a href="Homepage.html#about">Team</a>
+    <a href="Homepage.html#car">The Car</a>
+    <a href="Driverless.html">Driverless</a>
+    <a href="Homepage.html#sponsors">Sponsors</a>
+  </nav>
+  <span class="footer-copy">© 2025 e-gnition Hamburg e.V.</span>
+</footer>
+
+<script>
+window.addEventListener('scroll', () => {
+  document.getElementById('nav').classList.toggle('scrolled', window.scrollY > 10);
+});
+
+function handleSubmit(e) {
+  e.preventDefault();
+  document.getElementById('apply-form').style.display = 'none';
+  document.getElementById('form-success').style.display = 'block';
+  document.getElementById('form-success').scrollIntoView({ behavior: 'smooth', block: 'center' });
+}
+
+// highlight checked dept cards
+document.querySelectorAll('.dept-check input').forEach(cb => {
+  cb.addEventListener('change', () => {
+    cb.closest('.dept-check').style.borderColor = cb.checked ? 'var(--cyan)' : '';
+    cb.closest('.dept-check').style.background = cb.checked ? 'rgba(19,204,228,0.06)' : '';
+  });
+});
+</script>
+</body>
+</html>

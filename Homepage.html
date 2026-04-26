@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>e-gnition — Formula Student Team</title>
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;600;700;800;900&family=Barlow:wght@300;400;500;600&display=swap" rel="stylesheet" />
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body { font-family: 'Barlow', sans-serif; background: #fff; color: #111; -webkit-font-smoothing: antialiased; }
+
+:root { --cyan: #13cce4; --green: #6bbc2f; --navy: #02345f; --lgray: #f4f4f4; }
+
+/* NAV (shared sponsors-style) */
+#nav {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+  height: 60px; background: rgba(2,52,95,0.97);
+  backdrop-filter: blur(12px);
+  border-bottom: 1px solid rgba(19,204,228,0.2);
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 0 48px; transition: box-shadow .3s;
+}
+#nav.scrolled { box-shadow: 0 4px 24px rgba(0,0,0,.25); }
+.nav-logo { display: flex; align-items: center; text-decoration: none; }
+.nav-logo img { height: 36px; width: auto; }
+.nav-links { display: flex; gap: 28px; align-items: center; }
+.nav-links a { font-size: 13px; font-weight: 500; color: rgba(255,255,255,0.75); text-decoration: none; transition: color .2s; }
+.nav-links a:hover { color: var(--cyan); }
+.nav-links a.active { color: #fff; font-weight: 600; }
+.nav-links a.nav-cta { background: var(--green); color: #fff; font-family: 'Barlow Condensed', sans-serif; font-weight: 700; font-size: 13px; letter-spacing: .08em; text-transform: uppercase; padding: 8px 20px; }
+.nav-links a.nav-cta:hover { background: #5aa025; color: #fff; }
+
+/* HERO */
+#hero { margin-top: 60px; display: grid; grid-template-columns: 420px 1fr; min-height: calc(100vh - 60px); }
+.hero-left { background: var(--lgray); padding: 80px 48px 72px 60px; display: flex; flex-direction: column; justify-content: flex-end; position: relative; overflow: hidden; }
+.hero-eyebrow { font-family: 'Barlow Condensed', sans-serif; font-weight: 700; font-size: 13px; letter-spacing: .15em; text-transform: uppercase; color: var(--cyan); margin-bottom: 16px; }
+.hero-headline { font-family: 'Barlow Condensed', sans-serif; font-weight: 900; font-size: 92px; line-height: .92; text-transform: uppercase; color: var(--navy); }
+.hero-headline em { font-style: normal; color: var(--cyan); }
+.hero-body { font-size: 14px; font-weight: 300; color: #666; line-height: 1.7; margin-top: 22px; max-width: 300px; }
+.hero-actions { display: flex; gap: 10px; margin-top: 32px; }
+.btn { display: inline-flex; align-items: center; justify-content: center; font-family: 'Barlow Condensed', sans-serif; font-weight: 700; font-size: 13px; letter-spacing: .09em; text-transform: uppercase; text-decoration: none; padding: 11px 24px; cursor: pointer; transition: all .2s; border: none; }
+.btn-navy { background: var(--navy); color: #fff; }
+.btn-navy:hover { background: #011f3d; }
+.btn-green { background: var(--green); color: #fff; }
+.btn-green:hover { background: #5aa025; }
+.btn-cyan { background: var(--cyan); color: #fff; }
+.btn-cyan:hover { background: #0fb5cc; }
+.btn-outline { background: transparent; color: var(--navy); border: 2px solid var(--navy); }
+.btn-outline:hover { background: var(--navy); color: #fff; }
+
+.hero-right { position: relative; overflow: hidden; }
+.hero-right img { width: 100%; height: 100%; object-fit: cover; object-position: center 40%; display: block; }
+.hero-right-bar { position: absolute; bottom: 0; left: 0; right: 0; height: 5px; background: var(--cyan); }
+
+/* Section shared */
+.section-eyebrow { font-family: 'Barlow Condensed', sans-serif; font-weight: 700; font-size: 11px; letter-spacing: .18em; text-transform: uppercase; color: var(--cyan); margin-bottom: 12px; }
+.section-title { font-family: 'Barlow Condensed', sans-serif; font-weight: 800; font-size: 48px; line-height: .95; text-transform: uppercase; color: var(--navy); }
+
+/* ABOUT */
+#about { display: grid; grid-template-columns: 1fr 1fr 340px; border-top: 1px solid #eee; }
+.about-main { grid-column: 1 / 3; padding: 72px 48px 72px 60px; border-right: 1px solid #eee; }
+.about-main .section-title { font-size: 52px; }
+.about-body { font-size: 15px; color: #555; line-height: 1.75; margin-top: 20px; columns: 2; column-gap: 32px; }
+.about-sidebar { padding: 48px 36px; background: var(--lgray); display: flex; flex-direction: column; justify-content: center; gap: 28px; }
+.stat-item { border-left: 3px solid var(--cyan); padding-left: 16px; }
+.stat-num { font-family: 'Barlow Condensed', sans-serif; font-weight: 900; font-size: 48px; color: var(--navy); line-height: 1; }
+.stat-label { font-size: 11px; color: #999; text-transform: uppercase; letter-spacing: .08em; margin-top: 2px; }
+
+/* CAR */
+#car { background: var(--navy); position: relative; overflow: hidden; }
+.car-angle { display: block; width: 100%; line-height: 0; }
+.car-inner { display: flex; align-items: center; gap: 56px; padding: 40px 60px 72px; }
+.car-text { flex: 1; min-width: 0; }
+.car-name { font-family: 'Barlow Condensed', sans-serif; font-weight: 900; font-size: 88px; color: #fff; text-transform: uppercase; line-height: .9; }
+.car-divider { width: 48px; height: 4px; background: var(--cyan); margin: 20px 0 28px; }
+.car-specs { display: grid; grid-template-columns: 1fr 1fr; gap: 14px 36px; }
+.spec-key { font-size: 10px; color: rgba(255,255,255,.4); text-transform: uppercase; letter-spacing: .1em; }
+.spec-val { font-family: 'Barlow Condensed', sans-serif; font-weight: 700; font-size: 22px; color: #fff; margin-top: 2px; }
+.car-photo { flex-shrink: 0; }
+.car-photo img { width: 540px; height: 320px; object-fit: cover; object-position: center 40%; display: block; border-left: 4px solid var(--cyan); }
+
+/* DEPARTMENTS */
+#departments { padding: 72px 60px; background: #fff; }
+.dept-header { display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 36px; }
+.dept-link { font-size: 13px; color: var(--cyan); font-weight: 600; text-decoration: none; letter-spacing: .03em; }
+.dept-link:hover { text-decoration: underline; }
+.dept-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; }
+.dept-card { overflow: hidden; cursor: pointer; }
+.dept-photo {
+  width: 100%; height: 120px;
+  background: repeating-linear-gradient(-45deg, #ddd 0 6px, #e8e8e8 6px 14px);
+  display: flex; align-items: center; justify-content: center;
+  font-family: 'Barlow Condensed', sans-serif; font-size: 11px; letter-spacing: .1em; text-transform: uppercase; color: #bbb;
+  transition: filter .25s;
+}
+.dept-card:hover .dept-photo { filter: brightness(1.08); }
+.dept-label { padding: 11px 14px; background: var(--lgray); border-bottom: 3px solid var(--cyan); }
+.dept-label-text { font-family: 'Barlow Condensed', sans-serif; font-weight: 700; font-size: 17px; color: var(--navy); }
+
+/* ACHIEVEMENTS */
+#achievements { background: var(--lgray); padding: 64px 0 64px 60px; overflow: hidden; }
+.achieve-header { margin-bottom: 32px; padding-right: 60px; }
+.achieve-scroll { display: flex; gap: 6px; overflow-x: auto; padding-right: 60px; padding-bottom: 4px; scrollbar-width: none; }
+.achieve-scroll::-webkit-scrollbar { display: none; }
+.achieve-card { flex-shrink: 0; width: 260px; background: #fff; }
+.achieve-photo {
+  width: 260px; height: 160px;
+  background: repeating-linear-gradient(-45deg, #ddd 0 6px, #e8e8e8 6px 14px);
+  display: flex; align-items: center; justify-content: center;
+  font-family: 'Barlow Condensed', sans-serif; font-size: 11px; color: #bbb;
+  overflow: hidden;
+}
+.achieve-photo img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.achieve-body { padding: 18px 20px; }
+.achieve-year { font-family: 'Barlow Condensed', sans-serif; font-weight: 700; font-size: 12px; color: var(--cyan); letter-spacing: .1em; text-transform: uppercase; }
+.achieve-title { font-family: 'Barlow Condensed', sans-serif; font-weight: 800; font-size: 24px; color: var(--navy); margin-top: 4px; }
+.achieve-sub { font-size: 13px; color: #888; margin-top: 3px; }
+
+/* BOTTOM SPLIT */
+#bottom-split { display: grid; grid-template-columns: 1fr 1fr; }
+#sponsors { padding: 56px 48px 56px 60px; background: var(--lgray); border-right: 1px solid #e0e0e0; }
+.sponsor-logos { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 24px; }
+.sponsor-logo { width: 110px; height: 50px; background: #fff; display: flex; align-items: center; justify-content: center; font-family: 'Barlow Condensed', sans-serif; font-size: 12px; color: #aaa; letter-spacing: .04em; }
+.sponsor-cta { margin-top: 22px; font-size: 13px; color: var(--cyan); font-weight: 600; text-decoration: none; display: inline-block; }
+#join-cta { background: var(--navy); padding: 56px 48px; display: flex; flex-direction: column; justify-content: center; }
+.join-headline { font-family: 'Barlow Condensed', sans-serif; font-weight: 900; font-size: 64px; color: #fff; text-transform: uppercase; line-height: .92; }
+.join-headline em { font-style: normal; color: var(--green); }
+.join-body { font-size: 14px; color: rgba(255,255,255,.5); margin: 14px 0 24px; line-height: 1.6; }
+
+/* FOOTER */
+#footer { background: #0d0d0d; padding: 28px 60px; display: flex; justify-content: space-between; align-items: center; }
+.footer-logo img { height: 28px; width: auto; filter: brightness(0) invert(1); opacity: .7; }
+.footer-links { display: flex; gap: 24px; }
+.footer-links a { font-size: 11px; color: #555; letter-spacing: .06em; text-transform: uppercase; text-decoration: none; }
+.footer-links a:hover { color: #888; }
+.footer-copy { font-size: 11px; color: #444; }
+</style>
+</head>
+<body>
+
+<nav id="nav">
+  <a href="Homepage.html" class="nav-logo">
+    <img src="uploads/logo.png" alt="e-gnition" />
+  </a>
+  <div class="nav-links">
+    <a href="#about" class="active">Team</a>
+    <a href="#car">The Car</a>
+    <a href="#achievements">Results</a>
+    <a href="Sponsors.html">Sponsors</a>
+    <a href="Driverless.html" style="color:var(--cyan);">Driverless</a>
+    <a href="Join Us.html" class="nav-cta">Join Us</a>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section id="hero">
+  <div class="hero-left">
+    <div class="hero-eyebrow">Formula Student · Season 2025</div>
+    <h1 class="hero-headline">Engi-<br />neering<br />Excel-<br /><em>lence.</em></h1>
+    <p class="hero-body">Formula Student team from Hamburg. Designing, building &amp; racing since 2012.</p>
+    <div class="hero-actions">
+      <a href="#car" class="btn btn-navy">Our Car →</a>
+      <a href="Join Us.html" class="btn btn-green">Join Team</a>
+    </div>
+  </div>
+  <div class="hero-right">
+    <img src="uploads/juni.jpg" alt="EGN-25 on track" />
+    <div class="hero-right-bar"></div>
+  </div>
+</section>
+
+<!-- ABOUT -->
+<section id="about">
+  <div class="about-main">
+    <div class="section-eyebrow">About</div>
+    <h2 class="section-title">Students.<br />Engineers.<br />Racers.</h2>
+    <p class="about-body">
+      We are a multidisciplinary team of students from TU Hamburg who design and build formula-style race cars from scratch every year. We compete at international Formula Student events including Formula Student Germany, Formula Student Netherlands, and others. Our team spans mechanical, electrical, software, and business disciplines — united by a passion for motorsport engineering and pushing the limits of what students can achieve.
+    </p>
+    <a href="Join Us.html" class="btn btn-outline" style="margin-top:28px;">Read More →</a>
+  </div>
+  <div class="about-sidebar">
+    <div class="stat-item"><div class="stat-num">72</div><div class="stat-label">Team Members</div></div>
+    <div class="stat-item"><div class="stat-num">16</div><div class="stat-label">Cars Built</div></div>
+    <div class="stat-item"><div class="stat-num">#5</div><div class="stat-label">FSG 2025 DV</div></div>
+  </div>
+</section>
+
+<!-- CAR -->
+<section id="car">
+  <svg class="car-angle" viewBox="0 0 1440 48" preserveAspectRatio="none" style="height:48px;">
+    <polygon points="0,48 1440,0 1440,48" fill="#02345f" />
+  </svg>
+  <div class="car-inner">
+    <div class="car-text">
+      <div class="section-eyebrow" style="color:var(--green);">Technical</div>
+      <div class="car-name">EGN-25</div>
+      <div class="car-divider"></div>
+      <div class="car-specs">
+        <div class="spec-item"><div class="spec-key">Engine</div><div class="spec-val">4x electrical</div></div>
+        <div class="spec-item"><div class="spec-key">Weight</div><div class="spec-val">&lt; ~190 kg</div></div>
+        <div class="spec-item"><div class="spec-key">0–100 km/h</div><div class="spec-val">&lt; 3 s</div></div>
+        <div class="spec-item"><div class="spec-key">Class</div><div class="spec-val">Electrical</div></div>
+        <div class="spec-item"><div class="spec-key">Aero</div><div class="spec-val">New Rear Wing</div></div>
+        <div class="spec-item"><div class="spec-key">Drivetrain</div><div class="spec-val">All wheel drive</div></div>
+      </div>
+      <a href="Driverless.html" class="btn btn-cyan" style="margin-top:36px;">Explore the Car →</a>
+    </div>
+    <div class="car-photo">
+      <img src="uploads/fsa.jpg" alt="EGN-25" />
+    </div>
+  </div>
+</section>
+
+<!-- ACHIEVEMENTS -->
+<section id="achievements">
+  <div class="achieve-header">
+    <div class="section-eyebrow">Heritage</div>
+    <h2 class="section-title">Our Results</h2>
+  </div>
+  <div class="achieve-scroll">
+    <div class="achieve-card"><div class="achieve-photo"><img src="uploads/dv.jpg" alt="DV Cup 2024"></div><div class="achieve-body"><div class="achieve-year">2025</div><div class="achieve-title">#5 at DV Overall</div><div class="achieve-sub">Overall 5th place of DV Cup at Formula Student Germany</div></div></div>
+    <div class="achieve-card"><div class="achieve-photo">event photo</div><div class="achieve-body"><div class="achieve-year">2023</div><div class="achieve-title">WIN1</div><div class="achieve-sub">Design award — FS Netherlands</div></div></div>
+    <div class="achieve-card"><div class="achieve-photo">event photo</div><div class="achieve-body"><div class="achieve-year">2022</div><div class="achieve-title">WIN2</div><div class="achieve-sub">Endurance — FSG</div></div></div>
+    <div class="achieve-card"><div class="achieve-photo">event photo</div><div class="achieve-body"><div class="achieve-year">2021</div><div class="achieve-title">WIN3</div><div class="achieve-sub">FS Netherlands — Class B</div></div></div>
+    <div class="achieve-card"><div class="achieve-photo">event photo</div><div class="achieve-body"><div class="achieve-year">2020</div><div class="achieve-title">WIN4</div><div class="achieve-sub">Virtual competition — Design finalist</div></div></div>
+  </div>
+</section>
+
+<!-- DEPARTMENTS -->
+<section id="departments">
+  <div class="dept-header">
+    <div>
+      <div class="section-eyebrow">Recruitment</div>
+      <h2 class="section-title">What We Build</h2>
+    </div>
+    <a href="Join Us.html" class="dept-link">See All Roles →</a>
+  </div>
+  <div class="dept-grid">
+    <div class="dept-card"><div class="dept-photo">aerodynamics</div><div class="dept-label"><div class="dept-label-text">Aerodynamics</div></div></div>
+    <div class="dept-card"><div class="dept-photo">chassis</div><div class="dept-label"><div class="dept-label-text">Chassis</div></div></div>
+    <div class="dept-card"><div class="dept-photo">powertrain</div><div class="dept-label"><div class="dept-label-text">Powertrain</div></div></div>
+    <div class="dept-card"><div class="dept-photo">electronics</div><div class="dept-label"><div class="dept-label-text">Electronics</div></div></div>
+    <div class="dept-card"><div class="dept-photo">suspension</div><div class="dept-label"><div class="dept-label-text">Suspension</div></div></div>
+    <div class="dept-card"><div class="dept-photo">software</div><div class="dept-label"><div class="dept-label-text">Software</div></div></div>
+    <div class="dept-card"><div class="dept-photo">operations</div><div class="dept-label"><div class="dept-label-text">Operations</div></div></div>
+    <div class="dept-card"><div class="dept-photo">driverless</div><div class="dept-label"><div class="dept-label-text">Driverless</div></div></div>
+  </div>
+</section>
+
+<!-- BOTTOM SPLIT -->
+<div id="bottom-split">
+  <section id="sponsors">
+    <div class="section-eyebrow" style="color:#bbb;">Supported By</div>
+    <h2 class="section-title" style="font-size:36px;">Our Sponsors</h2>
+    <div class="sponsor-logos">
+      <div class="sponsor-logo">Volkswagen</div>
+      <div class="sponsor-logo">Siemens</div>
+      <div class="sponsor-logo">NXP</div>
+      <div class="sponsor-logo">Schaeffler</div>
+      <div class="sponsor-logo">Continental</div>
+      <div class="sponsor-logo">Bosch</div>
+    </div>
+    <a href="Sponsors.html" class="sponsor-cta">Become a Sponsor →</a>
+  </section>
+  <section id="join-cta">
+    <h2 class="join-headline">Join<br /><em>Us</em></h2>
+    <p class="join-body">We're recruiting for the 2025/26 season. Engineers, designers, business minds — all welcome. No prior experience required.</p>
+    <a href="Join Us.html" class="btn btn-green" style="align-self:flex-start;">Apply Now →</a>
+  </section>
+</div>
+
+<!-- FOOTER -->
+<footer id="footer">
+  <div class="footer-logo"><img src="uploads/logo.png" alt="e-gnition" /></div>
+  <nav class="footer-links">
+    <a href="Homepage.html">Home</a>
+    <a href="#about">Team</a>
+    <a href="#car">The Car</a>
+    <a href="Sponsors.html">Sponsors</a>
+    <a href="Driverless.html">Driverless</a>
+    <a href="Join Us.html">Join Us</a>
+  </nav>
+  <span class="footer-copy">© 2025 e-gnition Hamburg e.V.</span>
+</footer>
+
+<script>
+window.addEventListener('scroll', () => {
+  document.getElementById('nav').classList.toggle('scrolled', window.scrollY > 10);
+});
+</script>
+</body>
+</html>

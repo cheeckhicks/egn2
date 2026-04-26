@@ -1,0 +1,329 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Sponsors — e-gnition</title>
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;600;700;800;900&family=Barlow:wght@300;400;500;600&display=swap" rel="stylesheet" />
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body { font-family: 'Barlow', sans-serif; background: #fff; color: #111; -webkit-font-smoothing: antialiased; }
+
+:root { --cyan: #13cce4; --green: #6bbc2f; --navy: #02345f; --lgray: #f4f4f4; }
+
+/* NAV */
+#nav {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+  height: 60px; background: rgba(2,52,95,0.97);
+  backdrop-filter: blur(12px);
+  border-bottom: 1px solid rgba(19,204,228,0.2);
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 0 48px; transition: box-shadow .3s;
+}
+#nav.scrolled { box-shadow: 0 4px 24px rgba(0,0,0,.25); }
+.nav-logo { display: flex; align-items: center; text-decoration: none; }
+.nav-logo img { height: 36px; width: auto; }
+.nav-links { display: flex; gap: 28px; align-items: center; }
+.nav-links a { font-size: 13px; font-weight: 500; color: rgba(255,255,255,0.75); text-decoration: none; transition: color .2s; }
+.nav-links a:hover { color: var(--cyan); }
+.nav-links a.active { color: #fff; font-weight: 600; }
+.nav-links a.nav-cta { background: var(--green); color: #fff; font-family: 'Barlow Condensed', sans-serif; font-weight: 700; font-size: 13px; letter-spacing: .08em; text-transform: uppercase; padding: 8px 20px; }
+.nav-links a.nav-cta:hover { background: #5aa025; color: #fff; }
+
+/* HERO */
+#hero {
+  margin-top: 60px;
+  background: var(--navy); padding: 80px 60px 72px;
+  display: flex; align-items: flex-end; justify-content: space-between;
+  position: relative; overflow: hidden;
+  min-height: 300px;
+}
+#hero::after {
+  content: '';
+  position: absolute; bottom: -1px; left: 0; right: 0;
+  height: 60px;
+  background: linear-gradient(to bottom right, var(--navy) 50%, #fff 50%);
+}
+.hero-eyebrow { font-family: 'Barlow Condensed', sans-serif; font-weight: 700; font-size: 12px; letter-spacing: .18em; text-transform: uppercase; color: var(--cyan); margin-bottom: 12px; }
+.hero-headline { font-family: 'Barlow Condensed', sans-serif; font-weight: 900; font-size: 80px; line-height: .92; text-transform: uppercase; color: #fff; }
+.hero-headline em { font-style: normal; color: var(--cyan); }
+.hero-tagline { font-size: 15px; font-weight: 300; color: rgba(255,255,255,0.55); max-width: 420px; line-height: 1.7; margin-top: 20px; }
+.hero-cta-wrap { position: relative; z-index: 2; text-align: right; padding-bottom: 20px; }
+.btn { display: inline-flex; align-items: center; font-family: 'Barlow Condensed', sans-serif; font-weight: 700; font-size: 13px; letter-spacing: .09em; text-transform: uppercase; text-decoration: none; padding: 12px 28px; transition: all .2s; }
+.btn-cyan { background: var(--cyan); color: #fff; }
+.btn-cyan:hover { background: #0fb5cc; }
+
+/* THANK YOU */
+#thankyou { padding: 80px 60px 64px; max-width: 860px; }
+.section-eyebrow { font-family: 'Barlow Condensed', sans-serif; font-weight: 700; font-size: 11px; letter-spacing: .18em; text-transform: uppercase; color: var(--cyan); margin-bottom: 12px; }
+.section-title { font-family: 'Barlow Condensed', sans-serif; font-weight: 800; font-size: 48px; line-height: .95; text-transform: uppercase; color: var(--navy); }
+.body-text { font-size: 15px; color: #555; line-height: 1.8; margin-top: 18px; }
+.body-text strong { color: var(--navy); font-weight: 600; }
+.divider { width: 40px; height: 3px; background: var(--cyan); margin: 24px 0; }
+
+/* TIERS */
+#tiers { padding: 0 60px 80px; }
+.tiers-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 0; margin-top: 48px; }
+
+.tier-card { padding: 40px 36px 44px; border: 1px solid #eee; position: relative; overflow: hidden; }
+.tier-card + .tier-card { border-left: none; }
+.tier-card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 5px; }
+
+/* Gold */
+.tier-gold { background: #fffdf5; }
+.tier-gold::before { background: linear-gradient(to right, #e8b84b, #f5d580); }
+.tier-gold .tier-badge { color: #c9922c; border-color: rgba(201,146,44,0.3); background: rgba(201,146,44,0.07); }
+.tier-gold .tier-price { color: #c9922c; }
+
+/* Silver */
+.tier-silver { background: #fafafa; }
+.tier-silver::before { background: linear-gradient(to right, #9aa4b2, #c8d0d8); }
+.tier-silver .tier-badge { color: #6b7a8d; border-color: rgba(107,122,141,0.3); background: rgba(107,122,141,0.07); }
+.tier-silver .tier-price { color: #6b7a8d; }
+
+/* Bronze */
+.tier-bronze { background: #fff9f5; }
+.tier-bronze::before { background: linear-gradient(to right, #c8784a, #e0a882); }
+.tier-bronze .tier-badge { color: #b05e32; border-color: rgba(176,94,50,0.3); background: rgba(176,94,50,0.07); }
+.tier-bronze .tier-price { color: #b05e32; }
+
+.tier-badge {
+  display: inline-flex; align-items: center; gap: 6px;
+  font-family: 'Barlow Condensed', sans-serif; font-weight: 700;
+  font-size: 11px; letter-spacing: .14em; text-transform: uppercase;
+  border: 1px solid; padding: 4px 10px; margin-bottom: 20px;
+}
+.tier-name { font-family: 'Barlow Condensed', sans-serif; font-weight: 900; font-size: 40px; color: var(--navy); text-transform: uppercase; line-height: 1; }
+.tier-price { font-family: 'Barlow Condensed', sans-serif; font-weight: 700; font-size: 22px; margin-top: 6px; margin-bottom: 22px; }
+.tier-perks { list-style: none; display: flex; flex-direction: column; gap: 10px; }
+.tier-perk { display: flex; align-items: flex-start; gap: 10px; font-size: 14px; color: #555; line-height: 1.4; }
+.perk-check { flex-shrink: 0; width: 16px; height: 16px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 9px; color: #fff; margin-top: 1px; }
+.tier-gold .perk-check { background: #e8b84b; }
+.tier-silver .perk-check { background: #9aa4b2; }
+.tier-bronze .perk-check { background: #c8784a; }
+.tier-cta { margin-top: 28px; display: inline-flex; font-family: 'Barlow Condensed', sans-serif; font-weight: 700; font-size: 13px; letter-spacing: .08em; text-transform: uppercase; text-decoration: none; padding: 11px 24px; transition: all .2s; }
+.tier-gold .tier-cta { background: var(--navy); color: #fff; }
+.tier-gold .tier-cta:hover { background: #011f3d; }
+.tier-silver .tier-cta { background: var(--navy); color: #fff; }
+.tier-silver .tier-cta:hover { background: #011f3d; }
+.tier-bronze .tier-cta { background: var(--navy); color: #fff; }
+.tier-bronze .tier-cta:hover { background: #011f3d; }
+
+/* CURRENT SPONSORS */
+#current-sponsors { background: var(--lgray); padding: 72px 60px; border-top: 1px solid #eee; }
+.sponsors-tier-block { margin-bottom: 52px; }
+.sponsors-tier-block:last-child { margin-bottom: 0; }
+.tier-section-label {
+  display: flex; align-items: center; gap: 14px; margin-bottom: 24px;
+}
+.tier-dot { width: 10px; height: 10px; border-radius: 50%; flex-shrink: 0; }
+.tier-section-name { font-family: 'Barlow Condensed', sans-serif; font-weight: 800; font-size: 20px; text-transform: uppercase; letter-spacing: .06em; color: var(--navy); }
+.sponsor-logos-row { display: flex; gap: 12px; flex-wrap: wrap; align-items: center; }
+.sponsor-logo-card {
+  display: flex; align-items: center; justify-content: center;
+  background: #fff; border: 1px solid #e8e8e8;
+  font-family: 'Barlow Condensed', sans-serif; font-weight: 700;
+  font-size: 13px; letter-spacing: .06em; color: #aaa;
+  transition: border-color .2s;
+}
+.sponsor-logo-card:hover { border-color: var(--cyan); }
+
+/* BECOME */
+#become { background: var(--navy); padding: 72px 60px; display: flex; justify-content: space-between; align-items: center; }
+.become-text {}
+.become-headline { font-family: 'Barlow Condensed', sans-serif; font-weight: 900; font-size: 56px; color: #fff; text-transform: uppercase; line-height: .92; }
+.become-headline em { font-style: normal; color: var(--cyan); }
+.become-body { font-size: 14px; color: rgba(255,255,255,0.5); margin-top: 14px; max-width: 460px; line-height: 1.7; }
+.become-actions { display: flex; flex-direction: column; gap: 10px; align-items: flex-end; flex-shrink: 0; margin-left: 48px; }
+.btn-white { background: #fff; color: var(--navy); font-family: 'Barlow Condensed', sans-serif; font-weight: 700; font-size: 13px; letter-spacing: .09em; text-transform: uppercase; padding: 12px 28px; text-decoration: none; transition: background .2s; }
+.btn-white:hover { background: #e8f9fc; }
+.btn-outline-white { background: transparent; color: #fff; border: 1px solid rgba(255,255,255,0.3); font-family: 'Barlow Condensed', sans-serif; font-weight: 700; font-size: 13px; letter-spacing: .09em; text-transform: uppercase; padding: 12px 28px; text-decoration: none; transition: all .2s; }
+.btn-outline-white:hover { border-color: #fff; }
+
+/* FOOTER */
+#footer { background: #0d0d0d; padding: 28px 60px; display: flex; justify-content: space-between; align-items: center; }
+.footer-links { display: flex; gap: 24px; }
+.footer-links a { font-size: 11px; color: #555; letter-spacing: .06em; text-transform: uppercase; text-decoration: none; }
+.footer-links a:hover { color: #888; }
+.footer-copy { font-size: 11px; color: #444; }
+</style>
+</head>
+<body>
+
+<nav id="nav">
+  <a href="Homepage.html" class="nav-logo">
+    <img src="uploads/logo.png" alt="e-gnition" />
+  </a>
+  <div class="nav-links">
+    <a href="Homepage.html#about">Team</a>
+    <a href="Homepage.html#car">The Car</a>
+    <a href="Homepage.html#achievements">Results</a>
+    <a href="Sponsors.html" class="active">Sponsors</a>
+    <a href="Driverless.html" style="color:var(--cyan);">Driverless</a>
+    <a href="Join Us.html" class="nav-cta">Join Us</a>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section id="hero">
+  <div>
+    <div class="hero-eyebrow">Partners & Sponsors</div>
+    <h1 class="hero-headline">Fuelling<br /><em>Excellence.</em></h1>
+    <p class="hero-tagline">Our sponsors make it possible for us to design, build and race. Without them, there is no car, no team, no race day. Every bolt, every sensor, every lap — made possible by our partners.</p>
+  </div>
+  <div class="hero-cta-wrap">
+    <a href="#tiers" class="btn btn-cyan">View Partnership Tiers →</a>
+  </div>
+</section>
+
+<!-- THANK YOU -->
+<section id="thankyou">
+  <div class="section-eyebrow">A Note of Gratitude</div>
+  <h2 class="section-title">Thank You.</h2>
+  <div class="divider"></div>
+  <p class="body-text">
+    e-gnition Hamburg is a student team powered entirely by passion — and by the incredible support of our sponsors. Every financial contribution, every in-kind donation, every piece of software or hardware that carries your name goes directly into our car, our people, and our ambitions on the track.
+    <br /><br />
+    <strong>To every company, institution, and individual who has believed in us:</strong> thank you. You are part of every finish line we cross.
+  </p>
+</section>
+
+<!-- TIERS -->
+<section id="tiers">
+  <div class="section-eyebrow">Partnership Opportunities</div>
+  <h2 class="section-title">Sponsorship Tiers</h2>
+  <div class="tiers-grid">
+
+    <!-- GOLD -->
+    <div class="tier-card tier-gold">
+      <div class="tier-badge">★ Gold Partner</div>
+      <div class="tier-name">Gold</div>
+      <div class="tier-price">€ 5,000+</div>
+      <ul class="tier-perks">
+        <li class="tier-perk"><div class="perk-check">✓</div>Large logo on car livery (primary position)</li>
+        <li class="tier-perk"><div class="perk-check">✓</div>Logo on team suits & helmet</li>
+        <li class="tier-perk"><div class="perk-check">✓</div>Featured on all social media & website header</li>
+        <li class="tier-perk"><div class="perk-check">✓</div>Dedicated sponsor post (reach 5k+)</li>
+        <li class="tier-perk"><div class="perk-check">✓</div>VIP invitation to competition days</li>
+        <li class="tier-perk"><div class="perk-check">✓</div>Engineering report & season summary</li>
+        <li class="tier-perk"><div class="perk-check">✓</div>Recruiting access to top engineering students</li>
+      </ul>
+      <a href="#become" class="tier-cta">Become a Gold Partner →</a>
+    </div>
+
+    <!-- SILVER -->
+    <div class="tier-card tier-silver">
+      <div class="tier-badge">◆ Silver Partner</div>
+      <div class="tier-name">Silver</div>
+      <div class="tier-price">€ 2,000+</div>
+      <ul class="tier-perks">
+        <li class="tier-perk"><div class="perk-check">✓</div>Medium logo on car livery</li>
+        <li class="tier-perk"><div class="perk-check">✓</div>Logo on team suits</li>
+        <li class="tier-perk"><div class="perk-check">✓</div>Logo on website sponsors page</li>
+        <li class="tier-perk"><div class="perk-check">✓</div>Social media mention (1× per season)</li>
+        <li class="tier-perk"><div class="perk-check">✓</div>Invitation to competition days</li>
+        <li class="tier-perk"><div class="perk-check">✓</div>Season summary report</li>
+      </ul>
+      <a href="#become" class="tier-cta">Become a Silver Partner →</a>
+    </div>
+
+    <!-- BRONZE -->
+    <div class="tier-card tier-bronze">
+      <div class="tier-badge">● Bronze Partner</div>
+      <div class="tier-name">Bronze</div>
+      <div class="tier-price">€ 500+</div>
+      <ul class="tier-perks">
+        <li class="tier-perk"><div class="perk-check">✓</div>Small logo on car livery</li>
+        <li class="tier-perk"><div class="perk-check">✓</div>Logo on website sponsors page</li>
+        <li class="tier-perk"><div class="perk-check">✓</div>Social media mention</li>
+        <li class="tier-perk"><div class="perk-check">✓</div>Invitation to showcase event</li>
+      </ul>
+      <a href="#become" class="tier-cta">Become a Bronze Partner →</a>
+    </div>
+
+  </div>
+  <p style="font-size:13px; color:#aaa; margin-top:20px;">In-kind sponsorships (components, software, services) are also welcome and valued equally. <a href="#become" style="color:var(--cyan);">Contact us</a> to discuss.</p>
+</section>
+
+<!-- CURRENT SPONSORS -->
+<section id="current-sponsors">
+  <div class="section-eyebrow">2025 Season</div>
+  <h2 class="section-title">Our Partners</h2>
+  <div style="margin-top:48px;">
+
+    <div class="sponsors-tier-block">
+      <div class="tier-section-label">
+        <div class="tier-dot" style="background:#e8b84b;"></div>
+        <span class="tier-section-name">Gold Partners</span>
+      </div>
+      <div class="sponsor-logos-row">
+        <div class="sponsor-logo-card" style="width:180px; height:70px; font-size:15px;">Volkswagen Group</div>
+        <div class="sponsor-logo-card" style="width:180px; height:70px; font-size:15px;">Siemens</div>
+        <div class="sponsor-logo-card" style="width:180px; height:70px; font-size:15px;">NXP Semiconductors</div>
+      </div>
+    </div>
+
+    <div class="sponsors-tier-block">
+      <div class="tier-section-label">
+        <div class="tier-dot" style="background:#9aa4b2;"></div>
+        <span class="tier-section-name">Silver Partners</span>
+      </div>
+      <div class="sponsor-logos-row">
+        <div class="sponsor-logo-card" style="width:140px; height:56px;">Schaeffler</div>
+        <div class="sponsor-logo-card" style="width:140px; height:56px;">Meyer Burger</div>
+        <div class="sponsor-logo-card" style="width:140px; height:56px;">Bosch Rexroth</div>
+        <div class="sponsor-logo-card" style="width:140px; height:56px;">Continental</div>
+      </div>
+    </div>
+
+    <div class="sponsors-tier-block">
+      <div class="tier-section-label">
+        <div class="tier-dot" style="background:#c8784a;"></div>
+        <span class="tier-section-name">Bronze Partners</span>
+      </div>
+      <div class="sponsor-logos-row">
+        <div class="sponsor-logo-card" style="width:110px; height:44px; font-size:12px;">Solidworks</div>
+        <div class="sponsor-logo-card" style="width:110px; height:44px; font-size:12px;">TUHH</div>
+        <div class="sponsor-logo-card" style="width:110px; height:44px; font-size:12px;">NI</div>
+        <div class="sponsor-logo-card" style="width:110px; height:44px; font-size:12px;">SKF</div>
+        <div class="sponsor-logo-card" style="width:110px; height:44px; font-size:12px;">Brose</div>
+        <div class="sponsor-logo-card" style="width:110px; height:44px; font-size:12px;">Würth</div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- BECOME A PARTNER -->
+<section id="become">
+  <div class="become-text">
+    <h2 class="become-headline">Become a<br /><em>Partner</em></h2>
+    <p class="become-body">Interested in supporting e-gnition? We'd love to hear from you. Whether financial, in-kind, or technical — all partnerships make a real difference. Get in touch and let's build something together.</p>
+  </div>
+  <div class="become-actions">
+    <a href="mailto:sponsoring@egnition.hamburg" class="btn-white">Contact the Team →</a>
+    <a href="#tiers" class="btn-outline-white">View Tiers Again</a>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer id="footer">
+  <img src="uploads/logo.png" alt="e-gnition" style="height:26px; filter:brightness(0) invert(1); opacity:.5;" />
+  <nav class="footer-links">
+    <a href="Homepage.html">Home</a>
+    <a href="Homepage.html#about">Team</a>
+    <a href="Homepage.html#car">The Car</a>
+    <a href="Driverless.html">Driverless</a>
+    <a href="Join Us.html">Join Us</a>
+  </nav>
+  <span class="footer-copy">© 2025 e-gnition Hamburg e.V.</span>
+</footer>
+
+<script>
+window.addEventListener('scroll', () => {
+  document.getElementById('nav').classList.toggle('scrolled', window.scrollY > 10);
+});
+</script>
+</body>
+</html>

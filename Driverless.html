@@ -1,0 +1,690 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Driverless — e-gnition</title>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,400;0,500;0,700;0,800;1,400&family=Barlow+Condensed:wght@400;600;700;800;900&family=Barlow:wght@300;400;500;600&display=swap" rel="stylesheet" />
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body {
+  background: #050a0e;
+  color: #c8e6f0;
+  font-family: 'Barlow', sans-serif;
+  -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
+}
+
+:root {
+  --cyan: #13cce4;
+  --green: #6bbc2f;
+  --navy: #02345f;
+  --bg: #050a0e;
+  --bg2: #080f15;
+  --bg3: #0b1520;
+  --text: #c8e6f0;
+  --text-dim: rgba(200,230,240,0.4);
+  --mono: 'JetBrains Mono', monospace;
+}
+
+/* ── MATRIX CANVAS ── */
+#matrix-canvas {
+  position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+  pointer-events: none; z-index: 0; opacity: 0.18;
+}
+
+/* ── NAV ── */
+#nav {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+  height: 60px;
+  background: rgba(2,52,95,0.97);
+  backdrop-filter: blur(12px);
+  border-bottom: 1px solid rgba(19,204,228,0.2);
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 0 48px;
+  transition: box-shadow .3s;
+}
+#nav.scrolled { box-shadow: 0 4px 24px rgba(0,0,0,.25); }
+.nav-logo { display: flex; align-items: center; text-decoration: none; }
+.nav-logo img { height: 36px; width: auto; }
+.nav-links { display: flex; gap: 28px; align-items: center; }
+.nav-links a { font-family: 'Barlow', sans-serif; font-size: 13px; font-weight: 500; color: rgba(255,255,255,0.75); text-decoration: none; transition: color .2s; }
+.nav-links a:hover { color: var(--cyan); }
+.nav-links a.active { color: #fff; font-weight: 600; }
+.nav-links a.nav-cta { background: var(--green); color: #fff; font-family: 'Barlow Condensed', sans-serif; font-weight: 700; font-size: 13px; letter-spacing: .08em; text-transform: uppercase; padding: 8px 20px; }
+.nav-links a.nav-cta:hover { background: #5aa025; color: #fff; }
+
+/* ── HERO ── */
+#hero {
+  position: relative;
+  min-height: 100vh;
+  display: flex; flex-direction: column; justify-content: flex-end;
+  padding: 0 60px 80px;
+  overflow: hidden;
+}
+.hero-scanline {
+  position: absolute; inset: 0; z-index: 1;
+  background: repeating-linear-gradient(
+    to bottom,
+    transparent 0px,
+    transparent 3px,
+    rgba(0,0,0,0.04) 3px,
+    rgba(0,0,0,0.04) 4px
+  );
+  pointer-events: none;
+}
+.hero-glow {
+  position: absolute; bottom: -200px; left: -100px;
+  width: 700px; height: 700px;
+  background: radial-gradient(circle, rgba(19,204,228,0.07) 0%, transparent 70%);
+  pointer-events: none;
+}
+.hero-content { position: relative; z-index: 2; max-width: 900px; }
+.hero-prompt {
+  font-family: var(--mono);
+  font-size: 13px; color: var(--cyan); opacity: 0.7;
+  margin-bottom: 20px;
+  display: flex; align-items: center; gap: 8px;
+}
+.prompt-cursor {
+  display: inline-block; width: 10px; height: 18px;
+  background: var(--cyan); opacity: 0.8;
+  animation: blink 1s step-end infinite;
+}
+@keyframes blink { 0%,100%{opacity:.8} 50%{opacity:0} }
+
+.hero-headline {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-weight: 900;
+  font-size: clamp(72px, 10vw, 130px);
+  line-height: .92;
+  color: #fff;
+  text-transform: uppercase;
+  letter-spacing: -.01em;
+}
+.hero-headline .accent { color: var(--cyan); }
+.hero-headline .dim { color: rgba(255,255,255,0.2); }
+
+.hero-tagline {
+  font-family: var(--mono);
+  font-size: 14px; color: var(--cyan);
+  letter-spacing: .2em; text-transform: uppercase;
+  margin-top: 24px; opacity: 0.8;
+}
+.hero-sub {
+  font-size: 15px; font-weight: 300;
+  color: var(--text-dim); line-height: 1.7;
+  margin-top: 16px; max-width: 540px;
+}
+.hero-actions { display: flex; gap: 12px; margin-top: 40px; }
+.btn {
+  font-family: var(--mono);
+  font-size: 12px; font-weight: 700;
+  letter-spacing: .1em; text-transform: uppercase;
+  padding: 12px 28px; text-decoration: none;
+  cursor: pointer; border: none; transition: all .2s;
+  display: inline-flex; align-items: center; gap: 8px;
+}
+.btn-cyan { background: var(--cyan); color: #000; }
+.btn-cyan:hover { background: #00b5cc; }
+.btn-outline { background: transparent; color: var(--cyan); border: 1px solid rgba(19,204,228,0.4); }
+.btn-outline:hover { background: rgba(19,204,228,0.08); border-color: var(--cyan); }
+
+.hero-stats {
+  position: absolute; right: 60px; bottom: 80px; z-index: 2;
+  display: flex; flex-direction: column; gap: 20px; text-align: right;
+}
+.hero-stat-num {
+  font-family: var(--mono); font-weight: 700; font-size: 32px;
+  color: var(--cyan); line-height: 1;
+}
+.hero-stat-label {
+  font-size: 10px; color: var(--text-dim);
+  text-transform: uppercase; letter-spacing: .1em; margin-top: 3px;
+}
+
+/* section shared */
+.section-wrap { position: relative; z-index: 2; }
+.section-label {
+  font-family: var(--mono);
+  font-size: 10px; color: var(--cyan); opacity: 0.6;
+  letter-spacing: .2em; text-transform: uppercase;
+  margin-bottom: 10px;
+}
+.section-title {
+  font-family: var(--mono);
+  font-weight: 800; font-size: 42px;
+  color: #fff; text-transform: uppercase; line-height: 1.0;
+}
+.section-title .accent { color: var(--cyan); }
+.section-divider {
+  width: 40px; height: 2px; background: var(--cyan);
+  margin: 18px 0; opacity: 0.6;
+}
+
+/* ── INTRO ── */
+#intro {
+  position: relative; z-index: 2;
+  background: var(--bg2);
+  border-top: 1px solid rgba(19,204,228,0.1);
+  border-bottom: 1px solid rgba(19,204,228,0.1);
+  padding: 80px 60px;
+  display: grid; grid-template-columns: 1fr 1fr; gap: 80px; align-items: center;
+}
+.intro-text {}
+.intro-body {
+  font-size: 15px; color: var(--text-dim);
+  line-height: 1.8; margin-top: 16px;
+}
+.intro-body strong { color: var(--text); font-weight: 500; }
+.intro-quote {
+  margin-top: 32px;
+  border-left: 2px solid var(--cyan);
+  padding-left: 20px;
+}
+.intro-quote-text {
+  font-family: var(--mono);
+  font-size: 18px; color: var(--cyan); font-style: italic; line-height: 1.4;
+}
+.intro-visual {
+  position: relative;
+}
+.intro-terminal {
+  background: #000;
+  border: 1px solid rgba(19,204,228,0.2);
+  padding: 24px;
+  font-family: var(--mono); font-size: 12px;
+  line-height: 1.8;
+}
+.t-line { display: flex; gap: 8px; }
+.t-prompt { color: var(--green); flex-shrink: 0; }
+.t-cmd { color: #fff; }
+.t-out { color: var(--text-dim); padding-left: 16px; }
+.t-cyan { color: var(--cyan); }
+.t-green { color: var(--green); }
+.t-blink { display: inline-block; width: 8px; height: 14px; background: var(--cyan); animation: blink 1s step-end infinite; vertical-align: middle; }
+
+/* ── SPECS ── */
+#specs {
+  position: relative; z-index: 2;
+  padding: 80px 60px;
+  background: var(--bg);
+}
+.specs-grid {
+  display: grid; grid-template-columns: repeat(3, 1fr);
+  gap: 2px; margin-top: 48px;
+}
+.spec-card {
+  background: var(--bg2);
+  border: 1px solid rgba(19,204,228,0.08);
+  padding: 28px 28px;
+  transition: border-color .2s, background .2s;
+  position: relative; overflow: hidden;
+}
+.spec-card::before {
+  content: '';
+  position: absolute; top: 0; left: 0; right: 0; height: 2px;
+  background: var(--cyan); transform: scaleX(1); transform-origin: left;
+  transition: transform .3s;
+}
+.spec-card:nth-child(2)::before { background: var(--green); }
+.spec-card:nth-child(3)::before { background: #4a9fd4; }
+.spec-card:nth-child(4)::before { background: var(--green); }
+.spec-card:nth-child(5)::before { background: var(--cyan); }
+.spec-card:nth-child(6)::before { background: var(--green); }
+.spec-card:hover::before { transform: scaleX(1); }
+.spec-card:hover { border-color: rgba(19,204,228,0.25); background: rgba(19,204,228,0.03); }
+.spec-icon {
+  font-family: var(--mono); font-size: 11px;
+  color: var(--cyan); opacity: 0.5;
+  margin-bottom: 14px; letter-spacing: .1em;
+}
+.spec-key {
+  font-family: var(--mono); font-size: 10px;
+  color: var(--text-dim); text-transform: uppercase;
+  letter-spacing: .12em; margin-bottom: 6px;
+}
+.spec-val {
+  font-family: var(--mono); font-weight: 700; font-size: 26px;
+  color: #fff; line-height: 1;
+}
+.spec-unit { font-size: 14px; color: var(--cyan); font-weight: 400; }
+.spec-desc { font-size: 12px; color: var(--text-dim); margin-top: 8px; line-height: 1.5; }
+
+/* ── PIPELINE ── */
+#pipeline {
+  position: relative; z-index: 2;
+  background: var(--bg2);
+  border-top: 1px solid rgba(19,204,228,0.1);
+  padding: 80px 60px;
+}
+.pipeline-flow {
+  display: flex; align-items: flex-start; gap: 0;
+  margin-top: 48px; position: relative;
+}
+.pipeline-flow::before {
+  content: '';
+  position: absolute; top: 28px; left: 28px; right: 28px; height: 1px;
+  background: linear-gradient(to right, var(--cyan), rgba(19,204,228,0.2));
+}
+.pipeline-step {
+  flex: 1; text-align: center; padding: 0 12px; position: relative;
+}
+.pipeline-dot {
+  width: 56px; height: 56px;
+  background: var(--bg);
+  border: 2px solid var(--cyan);
+  border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  margin: 0 auto 16px;
+  font-family: var(--mono); font-size: 18px; color: var(--cyan);
+  position: relative; z-index: 1;
+}
+.pipeline-step:nth-child(2) .pipeline-dot { border-color: var(--green); color: var(--green); }
+.pipeline-step:nth-child(3) .pipeline-dot { border-color: #4a9fd4; color: #4a9fd4; }
+.pipeline-step:nth-child(4) .pipeline-dot { border-color: var(--green); color: var(--green); }
+.pipeline-step:nth-child(5) .pipeline-dot { border-color: var(--cyan); color: var(--cyan); }
+.pipeline-name {
+  font-family: var(--mono); font-weight: 700; font-size: 13px;
+  color: #fff; text-transform: uppercase; letter-spacing: .06em;
+  margin-bottom: 6px;
+}
+.pipeline-detail { font-size: 12px; color: var(--text-dim); line-height: 1.5; }
+
+/* ── VIDEO ── */
+#video-section {
+  position: relative; z-index: 2;
+  background: var(--bg);
+  padding: 80px 60px;
+}
+.video-frame {
+  margin-top: 48px; position: relative;
+  background: #000;
+  border: 1px solid rgba(19,204,228,0.15);
+  aspect-ratio: 16/9;
+  display: flex; align-items: center; justify-content: center;
+  overflow: hidden;
+}
+.video-ph {
+  position: absolute; inset: 0;
+  background: repeating-linear-gradient(-45deg, #080f15 0 8px, #0b1520 8px 18px);
+  display: flex; align-items: center; justify-content: center;
+  flex-direction: column; gap: 16px;
+}
+.video-play {
+  width: 72px; height: 72px;
+  background: rgba(19,204,228,0.12);
+  border: 2px solid var(--cyan);
+  border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  cursor: pointer; transition: background .2s;
+}
+.video-play:hover { background: rgba(19,204,228,0.2); }
+.video-play svg { margin-left: 4px; }
+.video-label {
+  font-family: var(--mono); font-size: 12px;
+  color: var(--text-dim); letter-spacing: .1em;
+}
+
+/* ── RESULTS ── */
+#results {
+  position: relative; z-index: 2;
+  background: var(--bg2);
+  border-top: 1px solid rgba(19,204,228,0.1);
+  padding: 80px 60px;
+}
+.results-table { margin-top: 40px; width: 100%; }
+.results-header {
+  display: grid; grid-template-columns: 80px 1fr 160px 140px;
+  gap: 16px; padding: 10px 20px;
+  font-family: var(--mono); font-size: 10px;
+  color: var(--text-dim); text-transform: uppercase; letter-spacing: .12em;
+  border-bottom: 1px solid rgba(19,204,228,0.15);
+  margin-bottom: 4px;
+}
+.result-row {
+  display: grid; grid-template-columns: 80px 1fr 160px 140px;
+  gap: 16px; padding: 16px 20px;
+  border: 1px solid transparent;
+  transition: border-color .2s, background .2s;
+  cursor: default;
+}
+.result-row:hover {
+  border-color: rgba(19,204,228,0.15);
+  background: rgba(19,204,228,0.03);
+}
+.result-year { font-family: var(--mono); font-size: 13px; color: var(--text-dim); }
+.result-event { font-family: var(--mono); font-size: 14px; color: #fff; font-weight: 500; }
+.result-place {
+  font-family: var(--mono); font-size: 14px; font-weight: 700;
+  color: var(--cyan);
+}
+.result-place.gold { color: #f0c040; }
+.result-badge {
+  font-family: var(--mono); font-size: 10px; letter-spacing: .08em;
+  color: var(--green); border: 1px solid rgba(107,188,47,0.3);
+  padding: 3px 8px; display: inline-block;
+}
+
+/* ── FOOTER ── */
+#footer {
+  position: relative; z-index: 2;
+  background: #000;
+  border-top: 1px solid rgba(19,204,228,0.1);
+  padding: 28px 60px;
+  display: flex; justify-content: space-between; align-items: center;
+}
+.footer-left { display: flex; align-items: center; gap: 16px; }
+.footer-logo { height: 26px; width: auto; filter: brightness(0) invert(1) sepia(1) saturate(3) hue-rotate(160deg); opacity: 0.5; }
+.footer-tag {
+  font-family: var(--mono); font-size: 10px;
+  color: rgba(19,204,228,0.4); letter-spacing: .12em;
+}
+.footer-links { display: flex; gap: 24px; }
+.footer-links a {
+  font-family: var(--mono); font-size: 10px;
+  color: rgba(200,230,240,0.3); text-decoration: none; letter-spacing: .06em;
+  text-transform: uppercase;
+}
+.footer-links a:hover { color: var(--cyan); }
+.footer-copy { font-family: var(--mono); font-size: 10px; color: rgba(200,230,240,0.2); }
+</style>
+</head>
+<body>
+
+<!-- Matrix Canvas -->
+<canvas id="matrix-canvas"></canvas>
+
+<!-- NAV -->
+<nav id="nav">
+  <a href="Homepage.html" class="nav-logo">
+    <img src="uploads/logo.png" alt="e-gnition" />
+  </a>
+  <div class="nav-links">
+    <a href="Homepage.html#about">Team</a>
+    <a href="Homepage.html#car">The Car</a>
+    <a href="Homepage.html#achievements">Results</a>
+    <a href="Sponsors.html">Sponsors</a>
+    <a href="Driverless.html" class="active" style="color:var(--cyan);">Driverless</a>
+    <a href="Join Us.html" class="nav-cta">Join Us</a>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section id="hero">
+  <div class="hero-scanline"></div>
+  <div class="hero-glow"></div>
+  <div class="hero-content">
+    <div class="hero-prompt">
+      <span>egn@driverless:~$</span>
+      <span class="prompt-cursor"></span>
+    </div>
+    <h1 class="hero-headline">
+      Beat<br />
+      <span class="accent">The</span><br />
+      Driver<span class="dim">_</span>
+    </h1>
+    <div class="hero-tagline">// Formula Student Driverless · e-gnition Hamburg</div>
+    <div style="font-family:'Barlow Condensed',sans-serif; font-weight:700; font-size:22px; color:rgba(19,204,228,0.5); margin-top:10px; letter-spacing:.06em;">"I am speed." &nbsp;<span style="color:rgba(19,204,228,0.35); font-size:16px; font-family:'JetBrains Mono',monospace;">— EGN-25</span></div>
+    <p class="hero-sub">
+      We build autonomous Formula Student race cars that compete without a driver.
+      Our driverless program pushes the boundaries of perception, planning, and control
+      — competing at the highest level of student engineering.
+    </p>
+    <div class="hero-actions">
+      <a href="#specs" class="btn btn-cyan">↓ View Specs</a>
+      <a href="#video-section" class="btn btn-outline">▶ Watch Demo</a>
+    </div>
+  </div>
+  <div class="hero-stats">
+    <div>
+      <div class="hero-stat-num" style="color:var(--cyan);">~20</div>
+      <div class="hero-stat-label">Engineers</div>
+    </div>
+    <div>
+      <div class="hero-stat-num" style="color:var(--green);">360°</div>
+      <div class="hero-stat-label">Perception</div>
+    </div>
+    <div>
+      <div class="hero-stat-num" style="color:#4a9fd4;">FS</div>
+      <div class="hero-stat-label">Competition Ready</div>
+    </div>
+  </div>
+</section>
+
+<!-- INTRO -->
+<section id="intro" class="section-wrap">
+  <div class="intro-text">
+    <div class="section-label">// init driverless.exe</div>
+    <h2 class="section-title">Autonomous<br /><span class="accent">Racing</span></h2>
+    <div class="section-divider"></div>
+    <p class="intro-body">
+      Formula Student Driverless (FSD) challenges teams to build cars that navigate a cone-defined track <strong>completely autonomously</strong> — without any human input. From raw sensor data to tire contact patch in milliseconds.
+      <br /><br />
+      Our system combines <strong>LiDAR, stereo cameras, and IMU data</strong> with custom perception and planning algorithms developed entirely in-house by students.
+    </p>
+    <div class="intro-quote">
+      <div class="intro-quote-text">"I am speed."</div>
+    </div>
+  </div>
+  <div class="intro-visual">
+    <div class="intro-terminal">
+      <div class="t-line"><span class="t-prompt">$</span><span class="t-cmd">./driverless --mode race --track fsg_2025</span></div>
+      <div class="t-out t-cyan">[INIT] Loading sensor stack...</div>
+      <div class="t-out t-green">[OK] LiDAR: 64-channel · 360° active</div>
+      <div class="t-out t-green">[OK] Stereo cam: 120fps · 120° FOV</div>
+      <div class="t-out t-green">[OK] IMU: 9-DOF online</div>
+      <div class="t-out t-cyan">[INIT] SLAM module loading...</div>
+      <div class="t-out t-green">[OK] Map built · 0 cones known</div>
+      <div class="t-out t-cyan">[INIT] Path planner ready</div>
+      <div class="t-out t-green">[OK] Controller: MPC active</div>
+      <div class="t-out" style="color:#fff; margin-top:8px;">[READY] System nominal. Awaiting GO signal.</div>
+      <div class="t-line" style="margin-top:4px;"><span class="t-prompt">$</span><span class="t-blink"></span></div>
+    </div>
+  </div>
+</section>
+
+<!-- SPECS -->
+<section id="specs" class="section-wrap">
+  <div class="section-label">// cat specs.json</div>
+  <h2 class="section-title">Technical <span class="accent">Stack</span></h2>
+  <div class="specs-grid">
+    <div class="spec-card">
+      <div class="spec-icon">[ SENSOR_01 ]</div>
+      <div class="spec-key">Primary LiDAR</div>
+      <div class="spec-val">64 <span class="spec-unit">ch</span></div>
+      <div class="spec-desc">360° rotating LiDAR. Full point cloud at 20Hz. Cone detection up to 30m.</div>
+    </div>
+    <div class="spec-card">
+      <div class="spec-icon">[ SENSOR_02 ]</div>
+      <div class="spec-key">Stereo Camera</div>
+      <div class="spec-val">120 <span class="spec-unit">fps</span></div>
+      <div class="spec-desc">120° field of view. Color-based cone classification. Fused with LiDAR detections.</div>
+    </div>
+    <div class="spec-card">
+      <div class="spec-icon">[ SENSOR_03 ]</div>
+      <div class="spec-key">IMU + GNSS</div>
+      <div class="spec-val">9 <span class="spec-unit">DOF</span></div>
+      <div class="spec-desc">RTK GPS + 9-axis inertial measurement for precise localisation.</div>
+    </div>
+    <div class="spec-card">
+      <div class="spec-icon">[ COMPUTE_01 ]</div>
+      <div class="spec-key">Onboard Computer</div>
+      <div class="spec-val">GPU <span class="spec-unit">+CPU</span></div>
+      <div class="spec-desc">Embedded GPU for real-time inference. Custom ROS2 middleware stack.</div>
+    </div>
+    <div class="spec-card">
+      <div class="spec-icon">[ ALGO_01 ]</div>
+      <div class="spec-key">Path Planning</div>
+      <div class="spec-val">MPC <span class="spec-unit">ctrl</span></div>
+      <div class="spec-desc">Model Predictive Control. Optimises lap time while respecting vehicle dynamics limits.</div>
+    </div>
+    <div class="spec-card">
+      <div class="spec-icon">[ ALGO_02 ]</div>
+      <div class="spec-key">Mapping &amp; SLAM</div>
+      <div class="spec-val">EKF <span class="spec-unit">SLAM</span></div>
+      <div class="spec-desc">Extended Kalman Filter SLAM. Simultaneous mapping of cones while localising the car.</div>
+    </div>
+  </div>
+</section>
+
+<!-- PIPELINE -->
+<section id="pipeline" class="section-wrap">
+  <div class="section-label" style="color:var(--green);">// ./pipeline --visualise</div>
+  <h2 class="section-title">How It <span class="accent">Works</span></h2>
+  <div class="pipeline-flow">
+    <div class="pipeline-step">
+      <div class="pipeline-dot">👁</div>
+      <div class="pipeline-name">Perception</div>
+      <div class="pipeline-detail">LiDAR + camera fusion. Cone detection &amp; colour classification.</div>
+    </div>
+    <div class="pipeline-step">
+      <div class="pipeline-dot">🗺</div>
+      <div class="pipeline-name">SLAM</div>
+      <div class="pipeline-detail">Build a map of cones while tracking the car's position in real time.</div>
+    </div>
+    <div class="pipeline-step">
+      <div class="pipeline-dot">🧠</div>
+      <div class="pipeline-name">Planning</div>
+      <div class="pipeline-detail">Generate an optimal path through the track. Update every 50ms.</div>
+    </div>
+    <div class="pipeline-step">
+      <div class="pipeline-dot">⚡</div>
+      <div class="pipeline-name">Control</div>
+      <div class="pipeline-detail">MPC sends steering + throttle commands to the car's actuators.</div>
+    </div>
+    <div class="pipeline-step">
+      <div class="pipeline-dot">🏎</div>
+      <div class="pipeline-name">Actuate</div>
+      <div class="pipeline-detail">Drive-by-wire system executes commands. Lap complete. Repeat.</div>
+    </div>
+  </div>
+</section>
+
+<!-- VIDEO -->
+<section id="video-section" class="section-wrap" style="background: var(--bg2);">
+  <div class="section-label">// play demo.mp4</div>
+  <h2 class="section-title">See It <span class="accent">Run</span></h2>
+  <div class="video-frame">
+    <video controls style="width:100%;height:100%;object-fit:cover;display:block;">
+      <source src="uploads/dv_video.mp4" type="video/mp4" />
+    </video>
+  </div>
+</section>
+
+<!-- RESULTS -->
+<section id="results" class="section-wrap" style="background: linear-gradient(135deg, #050a0e 60%, #01284d 100%);">
+  <div class="section-label" style="color: var(--green);">// cat results.log</div>
+  <h2 class="section-title">Competition <span class="accent">Log</span></h2>
+  <div class="results-table">
+    <div class="results-header">
+      <span>Year</span>
+      <span>Event</span>
+      <span>Result</span>
+      <span>Category</span>
+    </div>
+    <div class="result-row">
+      <span class="result-year">2024</span>
+      <span class="result-event">Formula Student Germany (FSG)</span>
+      <span class="result-place">Finished Endurance</span>
+      <span><span class="result-badge">DRIVERLESS</span></span>
+    </div>
+    <div class="result-row">
+      <span class="result-year">2024</span>
+      <span class="result-event">FS Netherlands</span>
+      <span class="result-place">Top 10</span>
+      <span><span class="result-badge" style="color:var(--cyan);border-color:rgba(19,204,228,0.3);">DRIVERLESS</span></span>
+    </div>
+    <div class="result-row">
+      <span class="result-year">2023</span>
+      <span class="result-event">Formula Student Germany (FSG)</span>
+      <span class="result-place">Design Finalist</span>
+      <span><span class="result-badge" style="color:#4a9fd4;border-color:rgba(74,159,212,0.3);">DRIVERLESS</span></span>
+    </div>
+    <div class="result-row">
+      <span class="result-year">2023</span>
+      <span class="result-event">FS Netherlands</span>
+      <span class="result-place">Acceleration run</span>
+      <span><span class="result-badge" style="color:var(--cyan);border-color:rgba(19,204,228,0.3);">DRIVERLESS</span></span>
+    </div>
+    <div class="result-row" style="opacity:0.4">
+      <span class="result-year">— — —</span>
+      <span class="result-event" style="font-size:12px; font-style:italic;">Replace with actual team results</span>
+      <span class="result-place">—</span>
+      <span></span>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer id="footer">
+  <div class="footer-left">
+    <img src="uploads/logo.png" class="footer-logo" alt="e-gnition" />
+    <span class="footer-tag">// DRIVERLESS DIVISION</span>
+  </div>
+  <nav class="footer-links">
+    <a href="Homepage.html">Home</a>
+    <a href="Homepage.html#about">Team</a>
+    <a href="Homepage.html#car">The Car</a>
+    <a href="Homepage.html#departments">Join</a>
+    <a href="Homepage.html#sponsors">Sponsors</a>
+  </nav>
+  <span class="footer-copy">© 2025 e-gnition Hamburg e.V.</span>
+</footer>
+
+<script>
+/* ── MATRIX RAIN ── */
+(function() {
+  const canvas = document.getElementById('matrix-canvas');
+  const ctx = canvas.getContext('2d');
+
+  const CHARS = '01アイウエオカキクケコサシスセソタチツテトナニヌネノ{}[]()<>/*+-=_#@!?ABCDEFabcdef0123456789';
+  const FONT_SIZE = 14;
+  let cols, drops;
+
+  function resize() {
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+    cols = Math.floor(canvas.width / FONT_SIZE);
+    drops = Array.from({ length: cols }, () => Math.random() * -100);
+  }
+
+  function draw() {
+    ctx.fillStyle = 'rgba(5,10,14,0.05)';
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
+    ctx.font = `${FONT_SIZE}px 'JetBrains Mono', monospace`;
+
+    for (let i = 0; i < drops.length; i++) {
+      const char = CHARS[Math.floor(Math.random() * CHARS.length)];
+      const y = drops[i] * FONT_SIZE;
+
+      // leading char brighter
+      const brightness = Math.random() > 0.95 ? 1 : 0.6;
+      if (Math.random() > 0.97) {
+        ctx.fillStyle = `rgba(255,255,255,${brightness})`;
+      } else {
+        ctx.fillStyle = `rgba(19,204,228,${brightness * 0.8})`;
+      }
+
+      ctx.fillText(char, i * FONT_SIZE, y);
+
+      if (y > canvas.height && Math.random() > 0.975) {
+        drops[i] = 0;
+      }
+      drops[i] += 0.5;
+    }
+  }
+
+  resize();
+  window.addEventListener('resize', resize);
+  setInterval(draw, 40);
+})();
+
+/* ── NAV SCROLL ── */
+window.addEventListener('scroll', () => {
+  document.getElementById('nav').classList.toggle('scrolled', window.scrollY > 10);
+});
+</script>
+</body>
+</html>
