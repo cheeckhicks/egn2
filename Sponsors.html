@@ -39,12 +39,6 @@ body { font-family: 'Barlow', sans-serif; background: #fff; color: #111; -webkit
   position: relative; overflow: hidden;
   min-height: 300px;
 }
-#hero::after {
-  content: '';
-  position: absolute; bottom: -1px; left: 0; right: 0;
-  height: 60px;
-  background: linear-gradient(to bottom right, var(--navy) 50%, #fff 50%);
-}
 .hero-eyebrow { font-family: 'Barlow Condensed', sans-serif; font-weight: 700; font-size: 12px; letter-spacing: .18em; text-transform: uppercase; color: var(--cyan); margin-bottom: 12px; }
 .hero-headline { font-family: 'Barlow Condensed', sans-serif; font-weight: 900; font-size: 80px; line-height: .92; text-transform: uppercase; color: #fff; }
 .hero-headline em { font-style: normal; color: var(--cyan); }
@@ -175,6 +169,9 @@ body { font-family: 'Barlow', sans-serif; background: #fff; color: #111; -webkit
   <div class="hero-cta-wrap">
     <a href="#tiers" class="btn btn-cyan">View Partnership Tiers →</a>
   </div>
+  <svg style="position:absolute;bottom:0;left:0;width:100%;height:60px;" viewBox="0 0 1440 60" preserveAspectRatio="none" aria-hidden="true">
+    <polygon points="0,60 1440,0 1440,60" fill="#fff"/>
+  </svg>
 </section>
 
 <!-- THANK YOU -->
@@ -185,7 +182,7 @@ body { font-family: 'Barlow', sans-serif; background: #fff; color: #111; -webkit
   <p class="body-text">
     e-gnition Hamburg is a student team powered entirely by passion — and by the incredible support of our sponsors. Every financial contribution, every in-kind donation, every piece of software or hardware that carries your name goes directly into our car, our people, and our ambitions on the track.
     <br /><br />
-    <strong>To every company, institution, and individual who has believed in us:</strong> thank you. You are part of every finish line we cross.
+    <strong>To every company, institution, and individual who has believed in us:</strong> Thank you. You are part of every finish line we cross.
   </p>
 </section>
 

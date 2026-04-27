@@ -95,6 +95,7 @@ body { font-family: 'Barlow', sans-serif; background: #fff; color: #111; -webkit
   transition: filter .25s;
 }
 .dept-card:hover .dept-photo { filter: brightness(1.08); }
+.dept-photo img { width: 100%; height: 100%; object-fit: cover; display: block; }
 .dept-label { padding: 11px 14px; background: var(--lgray); border-bottom: 3px solid var(--cyan); }
 .dept-label-text { font-family: 'Barlow Condensed', sans-serif; font-weight: 700; font-size: 17px; color: var(--navy); }
 
@@ -148,7 +149,7 @@ body { font-family: 'Barlow', sans-serif; background: #fff; color: #111; -webkit
     <a href="#car">The Car</a>
     <a href="#achievements">Results</a>
     <a href="Sponsors.html">Sponsors</a>
-    <a href="Driverless.html" style="color:var(--cyan);">Driverless</a>
+    <a href="Driverless.html">Driverless</a>
     <a href="join-us.html" class="nav-cta">Join Us</a>
   </div>
 </nav>
@@ -183,7 +184,7 @@ body { font-family: 'Barlow', sans-serif; background: #fff; color: #111; -webkit
   <div class="about-sidebar">
     <div class="stat-item"><div class="stat-num">72</div><div class="stat-label">Team Members</div></div>
     <div class="stat-item"><div class="stat-num">16</div><div class="stat-label">Cars Built</div></div>
-    <div class="stat-item"><div class="stat-num">#5</div><div class="stat-label">FSG 2025 DV</div></div>
+    <div class="stat-item"><div class="stat-num">#31</div><div class="stat-label">From 481 Teams Worldwide</div></div>
   </div>
 </section>
 
@@ -199,7 +200,7 @@ body { font-family: 'Barlow', sans-serif; background: #fff; color: #111; -webkit
       <div class="car-divider"></div>
       <div class="car-specs">
         <div class="spec-item"><div class="spec-key">Engine</div><div class="spec-val">4x electrical</div></div>
-        <div class="spec-item"><div class="spec-key">Weight</div><div class="spec-val">&lt; ~190 kg</div></div>
+        <div class="spec-item"><div class="spec-key">Weight</div><div class="spec-val">~190 kg</div></div>
         <div class="spec-item"><div class="spec-key">0–100 km/h</div><div class="spec-val">&lt; 3 s</div></div>
         <div class="spec-item"><div class="spec-key">Class</div><div class="spec-val">Electrical</div></div>
         <div class="spec-item"><div class="spec-key">Aero</div><div class="spec-val">New Rear Wing</div></div>
@@ -220,7 +221,7 @@ body { font-family: 'Barlow', sans-serif; background: #fff; color: #111; -webkit
     <h2 class="section-title">Our Results</h2>
   </div>
   <div class="achieve-scroll">
-    <div class="achieve-card"><div class="achieve-photo"><img src="uploads/dv.jpg" alt="DV Cup 2024"></div><div class="achieve-body"><div class="achieve-year">2025</div><div class="achieve-title">#5 at DV Overall</div><div class="achieve-sub">Overall 5th place of DV Cup at Formula Student Germany</div></div></div>
+    <div class="achieve-card"><div class="achieve-photo"><img src="uploads/dv.jpg" alt="DV Cup 2025"></div><div class="achieve-body"><div class="achieve-year">2025</div><div class="achieve-title">#5 at Driverless Cup</div><div class="achieve-sub">Overall 5th place of DC at Formula Student Germany</div></div></div>
     <div class="achieve-card"><div class="achieve-photo">event photo</div><div class="achieve-body"><div class="achieve-year">2023</div><div class="achieve-title">WIN1</div><div class="achieve-sub">Design award — FS Netherlands</div></div></div>
     <div class="achieve-card"><div class="achieve-photo">event photo</div><div class="achieve-body"><div class="achieve-year">2022</div><div class="achieve-title">WIN2</div><div class="achieve-sub">Endurance — FSG</div></div></div>
     <div class="achieve-card"><div class="achieve-photo">event photo</div><div class="achieve-body"><div class="achieve-year">2021</div><div class="achieve-title">WIN3</div><div class="achieve-sub">FS Netherlands — Class B</div></div></div>
@@ -238,14 +239,14 @@ body { font-family: 'Barlow', sans-serif; background: #fff; color: #111; -webkit
     <a href="join-us.html" class="dept-link">See All Roles →</a>
   </div>
   <div class="dept-grid">
-    <div class="dept-card"><div class="dept-photo">aerodynamics</div><div class="dept-label"><div class="dept-label-text">Aerodynamics</div></div></div>
-    <div class="dept-card"><div class="dept-photo">chassis</div><div class="dept-label"><div class="dept-label-text">Chassis</div></div></div>
+    <div class="dept-card"><div class="dept-photo"><img src="uploads/aero.webp" alt="Aerodynamics" /></div><div class="dept-label"><div class="dept-label-text">Aerodynamics</div></div></div>
+    <div class="dept-card"><div class="dept-photo"><img src="uploads/chassis.jpeg" alt="Chassis" /></div><div class="dept-label"><div class="dept-label-text">Chassis</div></div></div>
     <div class="dept-card"><div class="dept-photo">powertrain</div><div class="dept-label"><div class="dept-label-text">Powertrain</div></div></div>
-    <div class="dept-card"><div class="dept-photo">electronics</div><div class="dept-label"><div class="dept-label-text">Electronics</div></div></div>
+    <div class="dept-card"><div class="dept-photo"><img src="uploads/electronics.jpg" alt="Electronics" /></div><div class="dept-label"><div class="dept-label-text">Electronics</div></div></div>
     <div class="dept-card"><div class="dept-photo">suspension</div><div class="dept-label"><div class="dept-label-text">Suspension</div></div></div>
-    <div class="dept-card"><div class="dept-photo">software</div><div class="dept-label"><div class="dept-label-text">Software</div></div></div>
+    <div class="dept-card"><div class="dept-photo"><img src="uploads/embedded.jpg" alt="Software" /></div><div class="dept-label"><div class="dept-label-text">Software</div></div></div>
     <div class="dept-card"><div class="dept-photo">operations</div><div class="dept-label"><div class="dept-label-text">Operations</div></div></div>
-    <div class="dept-card"><div class="dept-photo">driverless</div><div class="dept-label"><div class="dept-label-text">Driverless</div></div></div>
+    <div class="dept-card"><div class="dept-photo"><img src="uploads/driverless.jpg" alt="Driverless" /></div><div class="dept-label"><div class="dept-label-text">Driverless</div></div></div>
   </div>
 </section>
 
